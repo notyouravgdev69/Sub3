@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sub 3:00">
+<meta name="theme-color" content="#080c10">
+<title>Sub 3:00 â€” Amsterdam 2026</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23080c10'/%3E%3Crect width='512' height='6' fill='%23ff6b2b'/%3E%3Ctext x='256' y='210' font-family='Arial Black,Arial' font-weight='900' font-size='148' fill='%23e8edf2' text-anchor='middle'%3ESUB%3C/text%3E%3Ctext x='256' y='370' font-family='Arial Black,Arial' font-weight='900' font-size='158' fill='%23ff6b2b' text-anchor='middle'%3E3%3A00%3C/text%3E%3Ctext x='256' y='440' font-family='Arial' font-size='36' fill='%235a7a96' text-anchor='middle' letter-spacing='8'%3EAMSTERDAM%3C/text%3E%3C/svg%3E">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#080c10;--s1:#0f1419;--s2:#161d26;
+  --border:#1e2a38;--border2:#2a3d52;
+  --orange:#ff6b2b;--green:#00e676;--blue:#29b6f6;
+  --yellow:#ffd740;--purple:#c084fc;--red:#ff5252;
+  --text:#e8edf2;--muted:#5a7a96;--mid:#8aaccc;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI'$sans-serif;font-size:15px}
+body{display:flex;flex-direction:column}
+
+/* â”€â”€ HEADER â”€â”€ */
+#header{
+  padding:calc(var(--safe-top) + 14px) 16px 12px;
+  border-bottom:1px solid var(--border);
+  background:var(--bg);
+  flex-shrink:0;
+  position:relative;
+  z-index:10;
+}
+.header-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.app-title{font-weight:900;font-size:28px;line-height:1;letter-spacing:-0.5px}
+.app-title span{color:var(--orange)}
+.xp-box{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:8px 12px;text-align:right;min-width:130px}
+.xp-level{font-size:9px;font-family:monospace;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:3px}
+.xp-val{font-size:18px;font-weight:800;color:var(--yellow);margin-bottom:5px}
+.xp-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:2px;transition:width .5s ease}
+
+.stats-row{display:flex;gap:6px;margin-top:10px;overflow-x:auto;padding-bottom:2px}
+.stat{background:var(--s1);border:1px solid var(--border);border-radius:6px;padding:6px 10px;flex-shrink:0}
+.stat-lbl{font-size:9px;font-family:monospace;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1px}
+.stat-val{font-size:18px;font-weight:800}
+
+.prog-wrap{margin-top:10px;background:var(--s1);border:1px solid var(--border);border-radius:7px;padding:8px 12px}
+.prog-labels{display:flex;justify-content:space-between;font-size:9px;font-family:monospace;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.prog-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--yellow),var(--orange));border-radius:3px;transition:width .6s ease}
+.prog-miles{display:flex;justify-content:space-between;margin-top:4px}
+.prog-miles span{font-size:8px;color:#2a3d52;font-family:monospace;letter-spacing:0.04em}
+
+/* â”€â”€ TABS â”€â”€ */
+#tabs{
+  display:flex;border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;
+  background:var(--bg);scrollbar-width:none;
+}
+#tabs::-webkit-scrollbar{display:none}
+.tab{font-size:10px;font-family:monospace;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--muted);padding:11px 13px;cursor:pointer;border:none;background:none;
+  border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.tab.active{color:var(--text);border-bottom-color:var(--orange)}
+.tab-badge{background:var(--s2);border-radius:10px;padding:1px 5px;font-size:8px;color:var(--muted)}
+.tab.active .tab-badge{background:rgba(255,107,43,.15);color:var(--orange)}
+
+/* â”€â”€ SCROLL AREA â”€â”€ */
+#content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px calc(var(--safe-bot) + 16px)}
+
+/* â”€â”€ LEGEND â”€â”€ */
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.leg{display:flex;align-items:center;gap:4px;font-size:9px;font-family:monospace;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em}
+.leg-dot{width:7px;height:7px;border-radius:50%}
+
+/* â”€â”€ PHASE HEADER â”€â”€ */
+.phase-hdr{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--s1);border:1px solid var(--border);border-radius:8px;margin-bottom:12px}
+.phase-ring{flex-shrink:0}
+.phase-hdr-text h2{font-size:20px;font-weight:800;line-height:1}
+.phase-hdr-text p{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+.phase-pct{font-family:monospace;font-size:16px;font-weight:800;margin-left:auto;flex-shrink:0}
+
+/* â”€â”€ WEEK CARDS â”€â”€ */
+.week{background:var(--s1);border:1px solid var(--border);border-radius:9px;margin-bottom:8px;overflow:hidden;transition:border-color .2s}
+.week.done{border-color:rgba(0,230,118,.3);background:rgba(0,230,118,.02)}
+.week.current{border-color:rgba(255,107,43,.4)}
+.week-hdr{display:flex;align-items:center;gap:8px;padding:11px 13px;cursor:pointer;user-select:none}
+.week-num{font-family:monospace;font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;flex-shrink:0;width:46px}
+.week-date{font-size:10px;color:var(--muted);flex:1;letter-spacing:0.02em}
+.week-km{font-family:monospace;font-size:15px;font-weight:800;flex-shrink:0}
+.week-cnt{font-family:monospace;font-size:10px;color:var(--muted);flex-shrink:0}
+.week-done-badge{background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.3);border-radius:4px;padding:2px 6px;font-size:8px;font-family:monospace;color:var(--green);letter-spacing:0.08em;flex-shrink:0}
+.week-chevron{font-size:10px;color:var(--muted);flex-shrink:0;transition:transform .2s}
+.week.open .week-chevron{transform:rotate(180deg)}
+.week-prog{height:2px;background:var(--border);margin:0 13px}
+.week-prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .4s ease}
+
+/* â”€â”€ DAYS â”€â”€ */
+.week-days{display:none;padding:6px 13px 11px;flex-direction:column;gap:4px}
+.week.open .week-days{display:flex}
+.day{display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:6px;cursor:pointer;transition:background .1s;border:1px solid transparent}
+.day:active{background:var(--s2)}
+.day.checked{background:rgba(0,230,118,.05);border-color:rgba(0,230,118,.15)}
+.day.is-rest{opacity:.38;cursor:default}
+.day-cb{width:22px;height:22px;border:2px solid var(--border2);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;transition:all .2s;color:var(--bg)}
+.day.checked .day-cb{background:var(--green);border-color:var(--green)}
+.day-bar{width:3px;border-radius:2px;align-self:stretch;min-height:18px;flex-shrink:0}
+.day-lbl{font-family:monospace;font-size:10px;color:var(--muted);width:26px;flex-shrink:0;letter-spacing:.04em}
+.day-txt{flex:1;font-size:13px;line-height:1.35}
+.day.checked .day-txt{color:var(--muted);text-decoration:line-through}
+.day-km{font-family:monospace;font-size:10px;color:var(--muted);flex-shrink:0}
+.day-xp{font-family:monospace;font-size:9px;color:var(--yellow);flex-shrink:0;opacity:.5}
+
+/* â”€â”€ PACE TABLE â”€â”€ */
+.pace-card{background:var(--s1);border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:12px}
+.pace-card table{width:100%;border-collapse:collapse;font-size:12px}
+.pace-card th{font-family:monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 11px;border-bottom:1px solid var(--border);background:var(--bg)}
+.pace-card td{padding:9px 11px;border-bottom:1px solid var(--s2);vertical-align:top}
+.pace-card tr:last-child td{border-bottom:none}
+.pace-val{font-family:monospace;font-size:13px;color:var(--yellow);font-weight:700}
+.race-tip{background:var(--s1);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:12px}
+.race-tip h3{font-size:16px;font-weight:800;color:var(--orange);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
+.race-tip p{font-size:12px;color:var(--muted);line-height:1.65}
+
+/* â”€â”€ TOAST â”€â”€ */
+#toast{position:fixed;bottom:calc(var(--safe-bot) + 16px);left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:9px 18px;font-family:monospace;font-size:11px;letter-spacing:.06em;z-index:999;white-space:nowrap;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* â”€â”€ ACHIEVEMENT â”€â”€ */
+#ach{position:fixed;top:calc(var(--safe-top) + 12px);right:12px;background:var(--s2);border:1px solid var(--yellow);border-radius:10px;padding:14px 16px;z-index:1000;max-width:220px;transform:translateX(130%);transition:transform .45s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 24px rgba(255,215,64,.18)}
+#ach.show{transform:translateX(0)}
+.ach-icon{font-size:26px;margin-bottom:4px}
+.ach-title{font-size:14px;font-weight:800;color:var(--yellow);margin-bottom:3px}
+.ach-desc{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* â”€â”€ INSTALL BANNER â”€â”€ */
+#install-tip{display:none;background:rgba(255,107,43,.08);border:1px solid rgba(255,107,43,.25);border-radius:7px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--mid);line-height:1.5}
+#install-tip strong{color:var(--orange)}
+#close-tip{float:right;background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;margin-left:8px}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="header-row">
+    <div>
+      <div style="font-size:9px;font-family:monospace;letter-spacing:.16em;color:var(--orange);text-transform:uppercase;margin-bottom:4px">Amsterdam Â· 18. okt 2026</div>
+      <div class="app-title">SUB <span>3:00</span></div>
+    </div>
+    <div class="xp-box">
+      <div class="xp-level" id="xp-level-lbl" style="color:#5a7a96">NYBEGYNNER</div>
+      <div class="xp-val">âš¡ <span id="xp-num">0</span> XP</div>
+      <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-lbl">ðŸ”¥ Streak</div><div class="stat-val" id="s-streak" style="color:var(--orange)">0</div></div>
+    <div class="stat"><div class="stat-lbl">ðŸ“ Km</div><div class="stat-val" id="s-km" style="color:var(--blue)">0</div></div>
+    <div class="stat"><div class="stat-lbl">âœ… Ã˜kter</div><div class="stat-val" id="s-sess" style="color:var(--green)">0</div></div>
+    <div class="stat"><div class="stat-lbl">ðŸ‹ï¸ Styrke</div><div class="stat-val" id="s-str" style="color:var(--purple)">0</div></div>
+    <div class="stat"><div class="stat-lbl">ðŸ—“ Uker</div><div class="stat-val" id="s-wks" style="color:var(--yellow)">0</div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-labels"><span>FREMGANG MOT AMSTERDAM</span><span id="prog-pct">0%</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-miles"><span>BASE</span><span>BYGG</span><span>TOPP</span><span>TAPER</span><span>ðŸ</span></div>
+  </div>
+</div>
+
+<div id="tabs"></div>
+<div id="content"></div>
+
+<div id="toast"></div>
+<div id="ach"><div class="ach-icon" id="ach-icon">ðŸ†</div><div class="ach-title" id="ach-title"></div><div class="ach-desc" id="ach-desc"></div></div>
+
+<script>
+const WEEK_DATES = ["27.04â€“03.05","04.05â€“10.05","11.05â€“17.05","18.05â€“24.05","25.05â€“31.05","01.06â€“07.06","08.06â€“14.06","15.06â€“21.06","22.06â€“28.06","29.06â€“05.07","06.07â€“12.07","13.07â€“19.07","20.07â€“26.07","27.07â€“02.08","03.08â€“09.08","10.08â€“16.08","17.08â€“23.08","24.08â€“30.08","31.08â€“06.09","07.09â€“13.09","14.09â€“20.09","21.09â€“27.09","28.09â€“04.10","05.10â€“11.10","12.10â€“18.10"];
+
+const PHASES=[{id:"base",title:"Base",color:"#00e676",desc:"Aerob grunnmur. 80% rolig. Annenhver uke er restitusjonsuke.",weeks:[{num:1,km:52,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Tor",t:"easy",desc:"Rolig lÃ¸p + 6Ã—100m strides",km:11},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:9},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:12}]},{num:2,km:55,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"4Ã—1000m @ 3:50 (90 sek pause)",km:12},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Tor",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:8},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:15}]},{num:3,km:60,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"5Ã—1000m @ 3:50 (90 sek pause)",km:13},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Tor",t:"tempo",desc:"TempolÃ¸p 2Ã—15 min @ 4:00",km:12},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:8},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:17}]},{num:4,km:48,rest:true,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:9},{d:"Tor",t:"tempo",desc:"TempolÃ¸p 20 min @ 4:02",km:11},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:8},{d:"LÃ¸r",t:"rest",desc:"Hvile",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:10}]},{num:5,km:63,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"5Ã—1200m @ 3:50 (90 sek pause)",km:14},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Tor",t:"tempo",desc:"TempolÃ¸p 25 min @ 4:00",km:12},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:8},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:19}]},{num:6,km:65,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"6Ã—1000m @ 3:48 (90 sek pause)",km:14},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Tor",t:"tempo",desc:"TempolÃ¸p 2Ã—20 min @ 3:58",km:13},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:9},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:19}]},{num:7,km:67,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"5Ã—1200m @ 3:48 (90 sek pause)",km:14},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:11},{d:"Tor",t:"tempo",desc:"TempolÃ¸p 30 min @ 3:58",km:14},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:9},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:19}]},{num:8,km:50,rest:true,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Tor",t:"tempo",desc:"TempolÃ¸p 20 min @ 4:00",km:12},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:8},{d:"LÃ¸r",t:"rest",desc:"Hvile",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:10}]}]},{id:"build",title:"Bygg",color:"#ffd740",desc:"Maratonspesifikk trening. Langturene vokser mot 32 km.",weeks:[{num:9,km:68,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"5Ã—1200m @ 3:48 (90 sek pause)",km:14},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:11},{d:"Tor",t:"tempo",desc:"Maratontempo 8 km @ 4:15 (i 14 km)",km:14},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:19}]},{num:10,km:72,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"6Ã—1200m @ 3:48 (90 sek pause)",km:15},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:11},{d:"Tor",t:"tempo",desc:"Maratontempo 10 km @ 4:15 (i 14 km)",km:14},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur 22 km â€” tren pÃ¥ geler",km:22}]},{num:11,km:75,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"4Ã—2000m @ 3:50 (2 min pause)",km:15},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:12},{d:"Tor",t:"tempo",desc:"Maratontempo 12 km @ 4:15 (i 16 km)",km:16},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:22}]},{num:12,km:55,rest:true,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:11},{d:"Tor",t:"tempo",desc:"Maratontempo 8 km @ 4:15",km:13},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:9},{d:"LÃ¸r",t:"rest",desc:"Hvile",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:12}]},{num:13,km:76,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"5Ã—1600m @ 3:50 (90 sek pause)",km:16},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:11},{d:"Tor",t:"tempo",desc:"Maratontempo 14 km @ 4:15 (i 18 km)",km:18},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur 21 km â€” tren pÃ¥ geler",km:21}]},{num:14,km:79,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"6Ã—1600m @ 3:50 (90 sek pause)",km:17},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:12},{d:"Tor",t:"tempo",desc:"Maratontempo 16 km @ 4:15 (i 20 km)",km:20},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:20}]},{num:15,km:80,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"3Ã—3000m @ 3:50 (2 min pause)",km:17},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:12},{d:"Tor",t:"tempo",desc:"Maratontempo 18 km @ 4:15 (i 22 km)",km:22},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur 19 km â€” geler",km:19}]},{num:16,km:58,rest:true,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"easy",desc:"Rolig lÃ¸p",km:11},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:11},{d:"Tor",t:"tempo",desc:"Maratontempo 10 km @ 4:15",km:14},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"LÃ¸r",t:"rest",desc:"Hvile",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:12}]}]},{id:"peak",title:"Topp",color:"#ff6b2b",desc:"Hardeste fase. 80â€“90 km/uke. Langturene 32â€“35 km med siste km i maratontempo.",weeks:[{num:17,km:83,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"5Ã—1600m @ 3:48 (90 sek pause)",km:17},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:13},{d:"Tor",t:"tempo",desc:"Maratontempo 20 km @ 4:13 (i 24 km)",km:24},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur â€” siste 6 km @ 4:15",km:19}]},{num:18,km:86,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"6Ã—1600m @ 3:48 (90 sek pause)",km:18},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:13},{d:"Tor",t:"tempo",desc:"Maratontempo 22 km @ 4:13 (i 26 km)",km:26},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur â€” siste 8 km @ 4:15",km:19}]},{num:19,km:88,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"4Ã—2000m @ 3:48 (2 min pause)",km:18},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:13},{d:"Tor",t:"tempo",desc:"Maratontempo 14 km + 2Ã—5 min @ 3:58",km:22},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:11},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur 32 km â€” siste 10 km @ 4:15",km:32}]},{num:20,km:62,rest:true,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"easy",desc:"Rolig lÃ¸p",km:12},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:12},{d:"Tor",t:"tempo",desc:"Maratontempo 10 km @ 4:15",km:14},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"LÃ¸r",t:"rest",desc:"Hvile",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur rolig",km:14}]},{num:21,km:90,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"3Ã—3000m @ 3:48 (2 min pause)",km:18},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:14},{d:"Tor",t:"tempo",desc:"Maratontempo 22 km @ 4:13 (i 26 km)",km:26},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:11},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Langtur 33 km â€” siste 10 km @ 4:15",km:33}]},{num:22,km:85,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"5Ã—1200m @ 3:48 (90 sek pause)",km:16},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:13},{d:"Tor",t:"tempo",desc:"Maratontempo 18 km @ 4:13 (i 22 km)",km:22},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:11},{d:"LÃ¸r",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"SÃ¸n",t:"long",desc:"Siste lange tur â€” siste 10 km @ 4:15",km:23}]}]},{id:"taper",title:"Taper",color:"#29b6f6",desc:"Reduser volum, behold intensitet. Stol pÃ¥ treningen. Beina lader opp.",weeks:[{num:23,km:55,rest:false,days:[{d:"Man",t:"strength",desc:"Styrketrening ðŸ’ª",km:0},{d:"Tir",t:"interval",desc:"4Ã—1200m @ 3:48 â€” kortere men hardt",km:13},{d:"Ons",t:"easy",desc:"Rolig lÃ¸p",km:10},{d:"Tor",t:"tempo",desc:"Maratontempo 10 km @ 4:13 (i 14 km)",km:14},{d:"Fre",t:"easy",desc:"Rolig lÃ¸p",km:9},{d:"LÃ¸r",t:"rest",desc:"Hvile",km:0},{d:"SÃ¸n",t:"long",desc:"Rolig langtur â€” ingen tempo",km:9}]},{num:24,km:35,rest:false,days:[{d:"Man",t:"rest",desc:"Hvile",km:0},{d:"Tir",t:"interval",desc:"3Ã—1000m @ 4:13 â€” aktivere beina",km:9},{d:"Ons",t:"easy",desc:"Rolig lett lÃ¸p",km:8},{d:"Tor",t:"tempo",desc:"5 km @ 4:15 i midten av 10 km",km:10},{d:"Fre",t:"easy",desc:"Rolig lett lÃ¸p",km:8},{d:"LÃ¸r",t:"rest",desc:"Hvile â€” pakk sekken",km:0},{d:"SÃ¸n",t:"rest",desc:"âœˆï¸ Reise til Amsterdam!",km:0}]},{num:25,km:8,rest:false,days:[{d:"Man",t:"easy",desc:"Lett jogg + 4Ã—100m strides",km:4},{d:"Tir",t:"easy",desc:"Rolig 20 min jogg",km:4},{d:"Ons",t:"rest",desc:"Hvile â€” expo & startnummer",km:0},{d:"Tor",t:"rest",desc:"Hvile â€” spis godt, drikk vann",km:0},{d:"Fre",t:"rest",desc:"Hvile â€” legg deg tidlig",km:0},{d:"LÃ¸r",t:"rest",desc:"Pasta, ro og 21:00 i seng",km:0},{d:"SÃ¸n",t:"long",desc:"ðŸ AMSTERDAM MARATON â€” SUB 3:00!",km:42}]}]}];
+const XP={rest:0,strength:25,easy:15,tempo:30,interval:35,long:40};
+const COL={easy:"#00e676",tempo:"#ffd740",interval:"#ff6b2b",long:"#29b6f6",strength:"#c084fc",rest:"#2a3d52"};
+const LEVELS=[{min:0,lbl:"NYBEGYNNER",col:"#5a7a96"},{min:500,lbl:"MOSJONIST",col:"#00e676"},{min:1500,lbl:"LÃ˜PER",col:"#29b6f6"},{min:3000,lbl:"MARATON-KLAR",col:"#ffd740"},{min:5000,lbl:"ELITE",col:"#ff6b2b"},{min:8000,lbl:"SUB 3:00 ðŸ‘‘",col:"#ff6b2b"}];
+const TOASTQ{easy:["âœ… Rolig tur i boks!","ðŸ’š Aerob base bygges!","ðŸ‘£ Beina takker deg!"],tempo:["ðŸ”¥ TempoÃ¸kt fullfÃ¸rt!","â± Laktat-terskelen heves!","ðŸ’ª NÃ¥ brenner det!"],interval:["âš¡ Intervaller done!","ðŸƒ VOâ‚‚max pÃ¥ vei opp!","ðŸ”´ Smerteterskelen senkes!"],long:["ðŸ”µ Langtur fullfÃ¸rt!","ðŸ—º En tur nÃ¦rmere Amsterdam!","ðŸ’™ Her vinnes maraton!"],strength:["ðŸ‹ï¸ Styrke i boks!","ðŸ’ª Sterkere lÃ¸per!","ðŸ”© Skadeforebygging pÃ¥ stell!"]};
+const ACHS=[{id:"first",icon:"ðŸŽ¯",title:"FÃ¸rste Ã¸kt!",desc:"Du er i gang. Amsterdam venter.",f:s=>s.sess===1},{id:"str3",icon:"ðŸ‹ï¸",title:"3 styrkeÃ¸kter!",desc:"Skadeforebygging pÃ¥ stell.",f:s=>s.str>=3},{id:"streak3",icon:"ðŸ”¥",title:"3-streak!",desc:"3 Ã¸kter pÃ¥ rad.",f:s=>s.streak===3},{id:"streak7",icon:"ðŸ’¥",title:"7-streak!",desc:"7 uten pause. Imponerende.",f:s=>s.streak===7},{id:"km100",icon:"ðŸ’¯",title:"100 km logget!",desc:"Hundre kilometer nÃ¦rmere Amsterdam.",f:s=>s.km>=100},{id:"km250",icon:"ðŸƒ",title:"250 km logget!",desc:"Du er virkelig i gang nÃ¥.",f:s=>s.km>=250},{id:"km500",icon:"âš¡",title:"500 km logget!",desc:"Halvveis i treningskilometerne.",f:s=>s.km>=500},{id:"wk1",icon:"ðŸ“…",title:"Uke 1 fullfÃ¸rt!",desc:"FÃ¸rste uke i boks. 24 igjen.",f:s=>s.wks>=},{id:"wk8",icon:"ðŸ§±",title:"Base-fase ferdig!",desc:"Grunnmuren ej lagt.",f:s=>s.wks>=8},{id:"wk16",ion:"ðŸ”¨",title:"Bygge-fase ferdig!",desc:"Du er en maratonmaskin.",f:s=>s.wks>=16},{id:"wk22",icon:"ðŸ”ï¸",title:"Toppfase ferdig!",desc:"Den hardeste jobben er gjort.",f:s=>s.wks>=22}];
+let S={checked:{},ach:[]};
+try{const r=localStorage.getItem("sub3_ams96");if(r)S=JSON.parse(r);}catch(e){}
+if(!S.checked)S.checked={};if(!S.ach)S.ach=[];
+function save(){try{localStorage.setItem("sub3_ams96",JSON.stringify(S));}catch(e){}}
+function stats(){let sess=0,km=0,wks=0,xp=0,str=0;PBASES.forEach(p=>p.weeks.forEach(w=>{w.days.forEach((d,i)=>{if(d.t==="rest")return;if(S.checked[`${p.id}-${w.num}-${i}`]){sess++;km+=d.km;xp+=XP[d.t]||0;if(d.t==="strength")str++;}});let d=0,t=0;w.days.forEach((dd,i)=>{if(dd.t!=="rest"){t++;if(S.checked[`${p.id}-${w.num}-${i}`])d++;}});if(t>0&&d===t)wks++;}));const all=[];PHASEQ.forEach(p=>p.weeks.forEach(w=>w.days.forEach((d,i)=>{if(d.t!=="rest")all.push(!!S.checked[`${p.id}-${w.num}-${i}`]);})));let streak=0;for(let i=all.length-1;i>=0;i--){if(all[i])streak++;else break;}return{sess,km:Math.round(km),wks,xp,str,streak};}
+let curPhase=0;
+const totalCheckable=PBASES.reduce((a,p)=>a+p.weeks.reduce((b,w)=>b+w.days.filter(d=>d.t!=="rest").length,0),0);
+function getLevel(xp){let l=LEVELS[0];for(const v of LEVELS)if(xp>=v.min)l=v;return l;}
+function getNext(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].min)return LEVELS[i+1]||null;return LEVELS[1];}
+function updateHeader(){const st=stats();const lv=getLevel(st.xp),nx=getNext(st.xp);const pct=nx?Math.round((st.xp-lv.min)/(nx.min-lv.min)*100):100;document.getElementById("xp-num").textContent=st.xp;const ll=document.getElementById("xp-level-lbl");ll.textContent=lv.lbl;ll.style.color=lv.col;document.getElementById("xp-fill").style.width=pct+"%";document.getElementById("s-streak").textContent=st.streak;document.getElementById("s-km").textContent=st.km“torage.getItem("sub3_ams96");if(r)S=JSON.parse(r);}catch(e){}
+if(!S.checked)S.checked={};if(!S.ach)S.ach=[];
+function save(){try{localStorage.setItem("sub3_ams96",JSON.stringify(S));}catch(e){}}
